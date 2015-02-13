@@ -5,10 +5,10 @@
 
 #include "priorityQueues.h"
 
-#define NAIVE_QUEUE 0
+#define CIRCLE_LIST 0
 #define DIRECTION_QUEUE 1
 #define ARRAY_HEAP 2
-#define IMPLEMENTATION NAIVE_QUEUE
+#define IMPLEMENTATION CIRCLE_LIST
 
 #ifndef IMPLEMENTATION
  #error IMPLEMENTATION must be defined as a macro of value 0, 1, or 2
@@ -23,26 +23,50 @@
 /*****************************************************************************
  * NAIVE_QUEUE IMPLEMENATION OF PIRORITY QUEUE
  */
-#elif IMPLEMENTATION == NAIVE_QUEUE // NAIVE_QUEUE
+#elif IMPLEMENTATION == CIRCLE_LIST
 
 struct Node 
 { 
-    int m;
+    int number;
     struct Node* next;
 };
 
-void insert(struct Node** implementation, int newNum)
+void insert(struct Node** queue, int newNum)
 {
-    return;
+    if (*queue == NULL)
+    {
+        struct Node* newNode = malloc(sizeof(struct Node));
+        newNode->number      = newNum;
+        newNode->next        = newNode;
+        *queue               = newNode;
+    }
+    else
+    {
+        struct Node* newNode = malloc(sizeof(struct Node));
+        newNode->number      = newNum;
+        newNode->next        = (*queue)->next;
+        (*queue)->next       = newNode; 
+    }
 }
 
-int pop(struct Node** implementation)
+int pop(struct Node** queue)
 {
     return 0;
 }
 
 
+void printQueue(struct Node* queue)
+{
+    struct Node* tracer = queue;
+    if (tracer == NULL) return;
+    do
+    {
+        printf("%d, ", tracer->number);
+        tracer = tracer->next;
+    } while (tracer != queue);
+    putchar('\n');
 
+}
 
 
 // Raise an error message saying you haven't picked an implementation
@@ -60,10 +84,11 @@ void runHeapTest(int elements, int firstDumpAmmount)
     struct Node* priorityQueue = NULL;
     srand(time(NULL));
     int halfwayMark = elements/2;
+
+
     if (firstDumpAmmount > halfwayMark)
     {
         printf("Error: asked to pop more elements then half the total\n");
-
     }
 
     // Iterate over a bunch of random numbers

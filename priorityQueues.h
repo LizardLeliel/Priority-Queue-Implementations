@@ -14,6 +14,8 @@ int pop(struct Node** implementation);
 void runHeapTest(int elements, int firstDumpAmmount);
 void runPrintedHeapTest(int elements, int firstDumpAmmount);
 
+void printArbitaryData(struct Node* queue);
+
 
 #define PRIORITY_QUEUE_FLAVOURS
 #endif
