@@ -54,7 +54,36 @@ int pop(struct Node** implementation)
  * Runner function
  */
 
-void runHeapTest(int elements, int dump, bool printOutput)
+void runHeapTest(int elements, int firstDumpAmmount)
 {
+    // Initialize a couple of things
+    struct Node* priorityQueue = NULL;
+    srand(time(NULL));
+    int halfwayMark = elements/2;
+    if (firstDumpAmmount > halfwayMark)
+    {
+        printf("Error: asked to pop more elements then half the total\n");
+
+    }
+
+    // Iterate over a bunch of random numbers
+    for (int i=0; i < elements; ++i)
+    {
+        insert(&priorityQueue, rand());
+        
+        // Halfway through, pop an arbitary ammount of nodes
+        if (i == halfwayMark)
+        {
+            for (int n=0; n < firstDumpAmmount; ++n)
+            {
+                pop(&priorityQueue);
+            }
+        }
+
+    }
+
+    // Pop the rest (which should also free the memory)
+    while (priorityQueue != NULL) pop(&priorityQueue);
+
     return;
 }

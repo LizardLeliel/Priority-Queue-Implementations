@@ -11,7 +11,8 @@ void insert(struct Node** implementation, int newNum);
 int pop(struct Node** implementation);
 
 
-void runHeapTest(int elements, int dump, bool printOutput);
+void runHeapTest(int elements, int firstDumpAmmount);
+void runPrintedHeapTest(int elements, int firstDumpAmmount);
 
 
 #define PRIORITY_QUEUE_FLAVOURS
