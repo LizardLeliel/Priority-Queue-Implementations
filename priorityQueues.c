@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <limits.h>
 
 #include "priorityQueues.h"
 
@@ -49,9 +50,47 @@ void insert(struct Node** queue, int newNum)
     }
 }
 
+void removeNode(struct Node** queue)
+{
+    // Yes, we free the next node. Its a very novel way to remove, I'm just
+    //  too tired to explain. Also, I'll need to set a case for it the queue
+    //  has only one node lef, which I'll do tomorrow. Man I"m tired. I wonder
+    //  if anyone is reading this. If someone is, well, HELLO THERE, THIS IS
+    //  LIZARD! ITS REALLY HARD TO CODE WHEN YOU'RE TIRED!
+    struct Node* toFree = (*queue)->next;
+    **queue = *toFree;
+
+    // I hope I'm doing it right.... I'm doing something wrong for now
+    free(toFree);
+
+}
+
 int pop(struct Node** queue)
 {
-    return 0;
+    if (queue == NULL || *queue == NULL)
+    {
+        printf("Warning: emptey queue");
+        return 0;
+    }
+    
+    struct Node* finder = *queue;
+    struct Node* record = finder;
+    int priority = INT_MIN;
+    do
+    {
+        if (finder->number > priority)
+        {
+            record   = finder;
+            priority = finder->number;
+        }
+
+        finder = finder->next;
+
+    } while (record != finder);
+
+    removeNode(&record);
+    return priority;
+
 }
 
 
