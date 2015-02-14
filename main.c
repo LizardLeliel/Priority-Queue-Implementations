@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     insert(&thisThing, 5);
     printQueue(thisThing);
     printf("Highest: %d\n", pop(&thisThing));
-    //printQueue(thisThing);
+    printQueue(thisThing);
 
     printf("Goodbye, world!\n");
     return 0;
