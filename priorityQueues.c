@@ -7,8 +7,10 @@
 #include "priorityQueues.h"
 
 #define CIRCLE_LIST 0
-#define DIRECTION_QUEUE 1
-#define ARRAY_HEAP 2
+#define SORTED_LIST 1
+#define SORTED_CIRCLE_LIST 2 // Maybe?
+#define ARRAYLESS_HEAP 3
+#define ARRAY_HEAP 4
 #define IMPLEMENTATION CIRCLE_LIST
 
 #ifndef IMPLEMENTATION
@@ -17,14 +19,72 @@
 
 #if IMPLEMENTATION == ARRAY_HEAP
 
-#elif IMPLEMENTATION == DIRECTION_QUEUE
+#elif IMPLEMENTATION == ARRAYLESS_HEAP
 
+/*****************************************************************************
+ * SORTED_LIST IMPLEMENATION OF PIRORITY QUEUE
+ */
+#elif IMPLEMENTATION == SORTED_LIST
+
+char implementationName[64] = "Sorted list";
+
+struct Node
+{
+    int number;
+    struct Node* next;
+};
+
+void insert(struct Node** queue, int newNum)
+{
+    struct Node* newNode = malloc(sizeof(struct Node));
+    newNode->number      = newNum;
+
+    if (*queue == NULL || (*queue)->number < newNum)
+    {
+        newNode->next = *queue;
+        *queue        = newNode;   
+    }
+    // By the way: this implementation is slower then the circular list below
+    else
+    {
+        struct Node* tracer = *queue;
+        while (tracer->next != NULL && tracer->next->number > newNum)
+        {
+            tracer = tracer->next;
+        }
+        newNode->next = tracer->next;
+        tracer->next  = newNode;
+    }
+}
+
+int pop(struct Node** queue)
+{
+    struct Node* toFree = *queue;
+    int returnVal = toFree->number;
+
+    *queue = toFree->next;
+
+    free(toFree);
+    return returnVal;
+}
+
+void printQueue(struct Node* queue)
+{
+    while (queue != NULL)
+    {
+        printf("%d, ", queue->number);
+        queue = queue->next;
+    }
+    putchar('\n');
+}
 
 
 /*****************************************************************************
  * NAIVE_QUEUE IMPLEMENATION OF PIRORITY QUEUE
  */
 #elif IMPLEMENTATION == CIRCLE_LIST
+
+char implementationName[64] = "Naive list (unsorted Circular list)";
 
 struct Node 
 { 
@@ -50,6 +110,7 @@ void insert(struct Node** queue, int newNum)
     }
 }
 
+// This is a helper function
 void removeNode(struct Node** queue)
 {
     // Instead of deleting the current node, we copy the contents 
@@ -165,3 +226,45 @@ void runHeapTest(int elements, int firstDumpAmmount)
 
     return;
 }
+
+// VERY close to the first one
+void runPrintedHeapTest(int elements, int firstDumpAmmount)
+{
+    // Initialize a couple of things
+    struct Node* priorityQueue = NULL;
+    srand(time(NULL));
+    int halfwayMark = elements/2;
+
+
+    if (firstDumpAmmount > halfwayMark)
+    {
+        printf("Error: asked to pop more elements midayway then half the");
+        printf(" total nodes\n");
+    }
+
+    // Iterate through the random numbers
+    for (int i = 0; i < halfwayMark; ++i)
+    {
+        insert(&priorityQueue, rand());
+    }
+    for (int i = 0; i < firstDumpAmmount; ++i)
+    {
+        pop(&priorityQueue);
+    }
+    
+    for (int i = 0; i < halfwayMark; ++i)
+    {
+        insert(&priorityQueue, rand());
+    }
+
+    printf("The numbers randomly generated: ");
+    printQueue(priorityQueue);
+    printf("\n All the numbers from highest to lowest: ");
+
+    // Pop the rest (which should also free the memory)
+    while (priorityQueue != NULL) printf("%d, ", pop(&priorityQueue));
+    putchar('\n');
+
+    return;
+}
+

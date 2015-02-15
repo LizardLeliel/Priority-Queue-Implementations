@@ -4,18 +4,16 @@
 
 struct Node;
 
-// We need to use void pointers because the structure of the heap/queue
-//  nodes changes depending on implementation
+// I lied; no void pointers needed
 void insert(struct Node** implementation, int newNum);
-
 int pop(struct Node** implementation);
-
-
-void runHeapTest(int elements, int firstDumpAmmount);
-//void runPrintedHeapTest(int elements, int firstDumpAmmount);
-
 void printQueue(struct Node* queue);
 
+void runHeapTest(int elements, int firstDumpAmmount);
+void runPrintedHeapTest(int elements, int firstDumpAmmount);
+
+
+extern char implementationName[64];
 
 #define PRIORITY_QUEUE_FLAVOURS
 #endif
