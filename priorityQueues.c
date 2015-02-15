@@ -56,6 +56,7 @@ void removeNode(struct Node** queue)
     //  of the next node, and delete /that/. It allows the list
     //  to be unbroken without going through the entire list to fix
     //  the ->next right before the current node
+    // Also: Error check for NULL pointertss
     struct Node* toFree = (*queue)->next;
 
     // If there's only one node left
@@ -80,9 +81,13 @@ int pop(struct Node** queue)
         return 0;
     }
     
+    // In this implementation, we go through the entire list, examining
+    //  every node to see if it has the highest priority. Its the slowest
+    //  part of this implemenation
     struct Node* finder = *queue;
     struct Node* record = finder;
     int priority = INT_MIN;
+
     do
     {
         if (finder->number > priority)
@@ -94,6 +99,7 @@ int pop(struct Node** queue)
         finder = finder->next;
 
     } while (record != finder);
+
     *queue = finder;
     removeNode(queue);
     return priority;
@@ -117,6 +123,8 @@ void printQueue(struct Node* queue)
 
 // Raise an error message saying you haven't picked an implementation
 #else 
+ // Todo: implement function pointers to have the users test the 
+ //  implementations at runtime
  #error IMPLEMENTATION must be defined as 0, 1, or 2
 #endif
 
@@ -134,23 +142,22 @@ void runHeapTest(int elements, int firstDumpAmmount)
 
     if (firstDumpAmmount > halfwayMark)
     {
-        printf("Error: asked to pop more elements then half the total\n");
+        printf("Error: asked to pop more elements midayway then half the");
+        printf(" total nodes\n");
     }
 
-    // Iterate over a bunch of random numbers
-    for (int i=0; i < elements; ++i)
+    // Iterate through the random numbers
+    for (int i = 0; i < halfwayMark; ++i)
     {
         insert(&priorityQueue, rand());
-        
-        // Halfway through, pop an arbitary ammount of nodes
-        if (i == halfwayMark)
-        {
-            for (int n=0; n < firstDumpAmmount; ++n)
-            {
-                pop(&priorityQueue);
-            }
-        }
-
+    }
+    for (int i = 0; i < firstDumpAmmount; ++i)
+    {
+        pop(&priorityQueue);
+    }
+    for (int i = 0; i < halfwayMark; ++i)
+    {
+        insert(&priorityQueue, rand());
     }
 
     // Pop the rest (which should also free the memory)
