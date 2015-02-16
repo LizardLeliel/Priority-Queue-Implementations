@@ -11,10 +11,9 @@
 #define SORTED_CIRCLE_LIST 2 // Maybe?
 #define ARRAYLESS_HEAP 3
 #define ARRAY_HEAP 4
-#define IMPLEMENTATION CIRCLE_LIST
 
 #ifndef IMPLEMENTATION
- #error IMPLEMENTATION must be defined as a macro of value 0, 1, or 2
+ #error IMPLEMENTATION must be defined as an appriopriate macro
 #endif
 
 #if IMPLEMENTATION == ARRAY_HEAP

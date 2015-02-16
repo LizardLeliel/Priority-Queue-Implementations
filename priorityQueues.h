@@ -4,7 +4,13 @@
 
 struct Node;
 
-// I lied; no void pointers needed
+#define IMPLEMENTATION SORTED_LIST
+/* Currently implementation macros:
+ *  - CIRCLE_LIST
+ *  - SORTED_LIST
+ * Define IMPLEMENATION as one of the above
+ */
+
 void insert(struct Node** implementation, int newNum);
 int pop(struct Node** implementation);
 void printQueue(struct Node* queue);
