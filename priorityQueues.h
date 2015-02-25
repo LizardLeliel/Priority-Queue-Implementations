@@ -4,7 +4,7 @@
 
 struct Node;
 
-#define IMPLEMENTATION SORTED_LIST
+#define IMPLEMENTATION SORTED_CIRCLE_LIST
 /* Currently implementation macros:
  *  - CIRCLE_LIST
  *  - SORTED_LIST

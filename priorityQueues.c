@@ -21,7 +21,87 @@
 #elif IMPLEMENTATION == ARRAYLESS_HEAP
 
 /*****************************************************************************
- * SORTED_LIST IMPLEMENATION OF PIRORITY QUEUE
+ * SORTED CIRCULAR LIST IMPLEMENTATION OF PRIORITY QUEUE
+ */
+#elif IMPLEMENTATION == SORTED_CIRCLE_LIST
+
+ char implementationName[64] = "Sorted circular list";
+
+ struct Node
+ {
+    int number;
+    struct Node* next;
+ };
+
+ void insert(struct Node** queue, int newNum)
+ {
+    if (*queue == NULL)
+    {
+        struct Node* newNode = malloc(sizeof(struct Node));
+        newNode->number      = newNum;
+        newNode->next        = newNode;
+        *queue               = newNode;
+    }
+    else 
+    {
+        struct Node* tracer = *queue;
+        do
+        {
+            if (newNum > tracer->number)
+            {
+                struct Node* newNode = malloc(sizeof(struct Node));
+                *newNode             = *tracer;
+                tracer->next         = newNode;
+                tracer->number       = newNum;
+                return; //<- Prevents a redundant if statement
+            }
+
+            tracer = tracer->next;
+        } while (tracer != *queue);
+
+        // If the new number is the lowest, then we need to change the
+        //  reference pointer
+        struct Node* newNode = malloc(sizeof(struct Node));
+        *newNode             = *tracer;
+        tracer->number       = newNum;
+        tracer->next         = newNode;
+        *queue               = newNode;
+    }
+}
+
+int pop(struct Node** queue)
+{
+    struct Node* toFree = (*queue)->next;
+    int returnVal       = toFree->number;
+
+    if (*queue == toFree)
+    {
+        *queue = NULL;
+    }
+    else
+    {
+        **queue = *toFree;
+    }
+
+    free(toFree);
+    return returnVal;
+}
+
+void printQueue(struct Node* queue)
+{
+    struct Node* tracer = queue;
+
+    do
+    {
+        printf("%d, ", tracer->number);
+        tracer = tracer->next;
+    } while (tracer != queue);
+
+    putchar('\n');
+}
+
+/*****************************************************************************
+ * SORTED_LIST IMPLEMENATION OF PRIORITY QUEUE
  */
 #elif IMPLEMENTATION == SORTED_LIST
 
@@ -59,7 +139,7 @@ void insert(struct Node** queue, int newNum)
 int pop(struct Node** queue)
 {
     struct Node* toFree = *queue;
-    int returnVal = toFree->number;
+    int returnVal       = toFree->number;
 
     *queue = toFree->next;
 
@@ -79,11 +159,11 @@ void printQueue(struct Node* queue)
 
 
 /*****************************************************************************
- * NAIVE_QUEUE IMPLEMENATION OF PIRORITY QUEUE
+ * NAIVE_QUEUE IMPLEMENATION OF PRIORITY QUEUE
  */
 #elif IMPLEMENTATION == CIRCLE_LIST
 
-char implementationName[64] = "Naive list (unsorted Circular list)";
+char implementationName[64] = "Unsorted Circular list";
 
 struct Node 
 { 

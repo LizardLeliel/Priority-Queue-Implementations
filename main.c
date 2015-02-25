@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     // Make a less lazy arg parsing implementation soon, me
     if (argc < 3) return -1;
     puts(implementationName);
-    runHeapTest(atoi(argv[1]), atoi(argv[2]));
+    runPrintedHeapTest(atoi(argv[1]), atoi(argv[2]));
 
     printf("Goodbye, world!\n");
     return 0;
