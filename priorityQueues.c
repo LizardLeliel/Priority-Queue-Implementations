@@ -16,7 +16,127 @@
  #error IMPLEMENTATION must be defined as an appriopriate macro
 #endif
 
+/*****************************************************************************
+ * ARRAY HEAP IMPLEMENTATION OF PRIORITY QUEUE
+ */
 #if IMPLEMENTATION == ARRAY_HEAP
+
+char implementationName[64] = "Array Heap";
+
+struct Node
+{
+    int currentNext;
+    int* numbers;
+};
+
+void initialize(struct Node** heap, int max)
+{
+    struct Node* iniNode = malloc(sizeof(struct Node));
+    iniNode->currentNext = 0;
+    iniNode->numbers     = calloc(sizeof(int), max + 2);
+
+
+    if (iniNode->numbers == NULL) exit(-1); // Explain with printing
+    *heap                = iniNode;
+}
+
+void insert(struct Node** heap, int newNum)
+{
+    int bottomNum, topNum;
+    struct Node* quickRef = *heap;
+    int* numbersRef       = (*heap)->numbers;
+    bottomNum             = (*heap)->currentNext;
+
+    // Initial insert
+    numbersRef[bottomNum] = newNum;
+
+    // Do the sort
+    while (bottomNum != 0)
+    {
+        // The result is half the highest even number below bottomNum
+        topNum = (bottomNum - 2 + (bottomNum & 1)) >> 1;
+
+        if (numbersRef[topNum] < newNum)
+        {
+            numbersRef[bottomNum] = numbersRef[topNum];
+            numbersRef[topNum]    = newNum;
+        }
+        else break;
+
+        bottomNum = topNum;
+    }
+
+    ++(quickRef->currentNext);
+
+}
+
+int pop(struct Node** heap)
+{
+    // Todo: Make things so much nicer
+    struct Node* qref = *heap;
+    int* numbersRef   = qref->numbers;
+    int returnVal     = numbersRef[0];
+    int topNum        = 0;
+    int leftNum       = 1;
+    int rightNum;
+
+    // Swap the bottom and top, decrement the next free slot
+    --(qref->currentNext);
+    numbersRef[0] = numbersRef[qref->currentNext];
+    numbersRef[qref->currentNext] = 0;
+
+    // Note: it doesn't matter if it checks a branch with only one leaf.
+    //  The unused leaf will always be 0, and it will never swap with it
+    while (leftNum < qref->currentNext)
+    {
+        rightNum = leftNum + 1;
+        // Assign left num to be the index of the higher leaf. I know its odd
+        if (numbersRef[leftNum] < numbersRef[rightNum]) 
+            {++leftNum; --rightNum;}
+
+        // If "left" is bigger then the current (note: Fix these names!!!)
+        if (numbersRef[topNum] < numbersRef[leftNum])
+        {   
+            int swapNum = numbersRef[topNum];
+            numbersRef[topNum]   = numbersRef[leftNum];
+            numbersRef[leftNum]  = swapNum;
+            topNum = leftNum;
+            leftNum = topNum*2 + 1;
+        } // Else if right is
+        else if (numbersRef[topNum] < numbersRef[rightNum])
+        {
+            int swapNum = numbersRef[topNum];
+            numbersRef[topNum]   = numbersRef[rightNum];
+            numbersRef[rightNum] = swapNum;
+            topNum               = rightNum;
+            leftNum              = topNum*2 + 1;
+        }
+        else break;
+    }
+    return returnVal;
+}
+
+bool empty(struct Node* heap)
+{
+    return (bool)heap->currentNext;
+}
+
+void printQueue(struct Node* heap)
+{
+    // Note: Possibly seperate the layers?
+    for (int i = 0, m = 1, q = 1; i < heap->currentNext; ++i, ++m)
+    {
+        printf("%d (%d), ", heap->numbers[i], i);
+        if (m == q)
+        {
+            putchar('\n');
+            for (int a=0; a < 78; ++a) putchar('=');
+            putchar('\n');
+            m = 0; q <<= 1;
+        }
+    }
+    putchar('\n');
+}
 
 #elif IMPLEMENTATION == ARRAYLESS_HEAP
 
@@ -25,16 +145,22 @@
  */
 #elif IMPLEMENTATION == SORTED_CIRCLE_LIST
 
- char implementationName[64] = "Sorted circular list";
+char implementationName[64] = "Sorted circular list";
 
- struct Node
- {
+struct Node
+{
     int number;
     struct Node* next;
  };
 
- void insert(struct Node** queue, int newNum)
- {
+// Ma
+void initialize(struct Node** implementation, int max)
+{
+    return;
+}
+
+void insert(struct Node** queue, int newNum)
+{
     if (*queue == NULL)
     {
         struct Node* newNode = malloc(sizeof(struct Node));
@@ -87,6 +213,11 @@ int pop(struct Node** queue)
     return returnVal;
 }
 
+bool empty(struct Node* queue)
+{
+    return (bool)queue;
+}
+
 void printQueue(struct Node* queue)
 {
     struct Node* tracer = queue;
@@ -112,6 +243,11 @@ struct Node
     int number;
     struct Node* next;
 };
+
+void initialize(struct Node** implementation, int max)
+{
+    return;
+}
 
 void insert(struct Node** queue, int newNum)
 {
@@ -147,6 +283,11 @@ int pop(struct Node** queue)
     return returnVal;
 }
 
+bool empty(struct Node* queue)
+{
+    return (bool)queue;
+}
+
 void printQueue(struct Node* queue)
 {
     while (queue != NULL)
@@ -170,6 +311,11 @@ struct Node
     int number;
     struct Node* next;
 };
+
+void initialize(struct Node** implementation, int max)
+{
+    return;
+}
 
 void insert(struct Node** queue, int newNum)
 {
@@ -246,6 +392,11 @@ int pop(struct Node** queue)
 
 }
 
+bool empty(struct Node* queue)
+{
+    return (bool)queue;
+}
+
 
 void printQueue(struct Node* queue)
 {
@@ -276,6 +427,7 @@ void runHeapTest(int elements, int firstDumpAmmount)
 {
     // Initialize a couple of things
     struct Node* priorityQueue = NULL;
+    initialize(&priorityQueue, elements);
     srand(time(NULL));
     int halfwayMark = elements/2;
 
@@ -301,7 +453,7 @@ void runHeapTest(int elements, int firstDumpAmmount)
     }
 
     // Pop the rest (which should also free the memory)
-    while (priorityQueue != NULL) pop(&priorityQueue);
+    while (empty(priorityQueue)) pop(&priorityQueue);
 
     return;
 }
@@ -311,6 +463,7 @@ void runPrintedHeapTest(int elements, int firstDumpAmmount)
 {
     // Initialize a couple of things
     struct Node* priorityQueue = NULL;
+    initialize(&priorityQueue, elements);
     srand(time(NULL));
     int halfwayMark = elements/2;
 
@@ -319,6 +472,7 @@ void runPrintedHeapTest(int elements, int firstDumpAmmount)
     {
         printf("Error: asked to pop more elements midayway then half the");
         printf(" total nodes\n");
+        exit(-2);
     }
 
     // Iterate through the random numbers
@@ -338,10 +492,11 @@ void runPrintedHeapTest(int elements, int firstDumpAmmount)
 
     printf("The numbers randomly generated: ");
     printQueue(priorityQueue);
+    printf("Success");
     printf("\n All the numbers from highest to lowest: ");
 
     // Pop the rest (which should also free the memory)
-    while (priorityQueue != NULL) printf("%d, ", pop(&priorityQueue));
+    while (empty(priorityQueue)) printf("%d, ", pop(&priorityQueue));
     putchar('\n');
 
     return;
