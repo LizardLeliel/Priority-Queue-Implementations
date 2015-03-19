@@ -17,7 +17,7 @@ int main(int argc, char** argv)
     // Make a less lazy arg parsing implementation soon, me
     if (argc < 0) return -1;
 
-    HeapBase* heap = new UnsortedCircularList();
+    HeapBase* heap = new ArrayHeap(100);
     cout << "Current heap implementation: " << heap->getName() << std::endl;
 
     runRandomHeapTest(100, heap);
