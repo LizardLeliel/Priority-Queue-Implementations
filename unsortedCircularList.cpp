@@ -27,6 +27,7 @@ UnsortedCircularList::~UnsortedCircularList()
         QueueNode* tracer   = queue->next;
         QueueNode* toDelete = tracer;
         queue->next         = NULL;
+        
         while (tracer != NULL)
         {
             toDelete = tracer;

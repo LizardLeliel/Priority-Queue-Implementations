@@ -12,6 +12,8 @@
 #define ARRAYLESS_HEAP 3
 #define ARRAY_HEAP 4
 
+// THIS FILE IS 100% DECPRECIATED, and only kept arround as a reference
+
 #ifndef IMPLEMENTATION
  #error IMPLEMENTATION must be defined as an appriopriate macro
 #endif

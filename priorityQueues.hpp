@@ -48,6 +48,24 @@ class UnsortedCircularList : public HeapBase
 
 };
 
+class ArrayHeap : public HeapBase
+{
+  public:
+    ArrayHeap(unsigned int maxValue);
+    ~ArrayHeap();
+
+    bool isEmpty();
+    unsigned int pop();
+    void insert(unsigned int inValue);
+    std::string getName();
+    void printQueue();
+
+  private:
+    unsigned int currentNext;
+    unsigned int* heapArray;
+
+};
+
 // All the refactor! ... The code below is the old C code, all commented out
 
 //#include <stdbool.h>
