@@ -1,9 +1,9 @@
-CC = gcc
-SRCS = $(wildcard *.c)
+CC = g++
+SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-PROG = heaps
+PROG = priorityQueue
 
-CFLAGS = -O2 -Wall -Wextra -pg -std=c99  
+CFLAGS = -O2 -Wall  -pg -std=gnu++11 
 
 # Unused variables is turned off while program is being written
 # (the warnings get anonying, especially since they will be used eventually)
@@ -19,4 +19,4 @@ $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) $< -c -o $@ $(INCFLAGS)
 
 clean:
-	rm -f *.bak vecmath/src/*.o *.o core.* $(PROG) 
+	rm -f *.bak  *.o core.* $(PROG) 

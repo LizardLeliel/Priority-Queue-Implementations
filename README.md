@@ -11,6 +11,11 @@ The purpose of this is to not only have a code demonstration of each implementat
 Implementation Timings and Averages (user time only)
 ====================================================
 
+Note: These are times for the C implementations. There were some implementations 
+I have yet to list, but I started the refactor before I wrote the times down.
+The gist of it is that sorted circular lists are still slower then unsorted circular
+lists, and actual heaps can sort 100,000,000 random items in an average of 35 seconds.
+
 Unsorted circular lists
 -----------------------
 
