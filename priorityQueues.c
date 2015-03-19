@@ -100,8 +100,8 @@ int pop(struct Node** heap)
             int swapNum = numbersRef[topNum];
             numbersRef[topNum]   = numbersRef[leftNum];
             numbersRef[leftNum]  = swapNum;
-            topNum = leftNum;
-            leftNum = topNum*2 + 1;
+            topNum               = leftNum;
+            leftNum              = topNum*2 + 1;
         } // Else if right is
         else if (numbersRef[topNum] < numbersRef[rightNum])
         {
