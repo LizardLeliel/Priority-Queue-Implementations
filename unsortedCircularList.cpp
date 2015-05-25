@@ -111,22 +111,6 @@ string UnsortedCircularList::getName()
 
 void UnsortedCircularList::printQueue() {}
 
-/* I needed /somewhere/ to put it! */
-void runRandomHeapTest(unsigned int insertAmmount, HeapBase* heap)
-{
-    srand(time(NULL));
-
-    for (int i = 0; i < insertAmmount; ++i)
-    {
-        heap->insert(rand());
-    }
-    while (!heap->isEmpty())
-    {
-        std::cout << heap->pop() << ", ";
-    }
-    std::cout << std::endl;
-}
-
 
 #define UNSORT_CIRCLE_LIST
 #endif

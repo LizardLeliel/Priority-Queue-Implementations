@@ -17,12 +17,12 @@ int main(int argc, char** argv)
     // Make a less lazy arg parsing implementation soon, me
     if (argc < 0) return -1;
 
-    HeapBase* heap = new ArrayHeap(100);
-    cout << "Current heap implementation: " << heap->getName() << std::endl;
+    PriorityQueue* priorityQueue = new ArrayHeap(100);
+    cout << "Current priority queue implementation: " << priorityQueue->getName() << std::endl;
 
-    runRandomHeapTest(100, heap);
+    runRandomPriorityQueueTest(100, priorityQueue);
 
-    delete heap;
+    delete priorityQueue;
 
     puts("Goodbye, world!");
     return 0;

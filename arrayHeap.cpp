@@ -42,23 +42,6 @@ void ArrayHeap::insert(unsigned int inValue)
     }
 
     ++currentNext;
-
-/*
-    while (bottomNum != 0)
-    {
-        // The result is half the highest even number below bottomNum
-        topNum = (bottomNum - 2 + (bottomNum & 1)) >> 1;
-
-        if (numbersRef[topNum] < newNum)
-        {
-            numbersRef[bottomNum] = numbersRef[topNum];
-            numbersRef[topNum]    = newNum;
-        }
-        else break;
-
-        bottomNum = topNum;
-    }
-*/
 }
 
 unsigned int ArrayHeap::pop()
@@ -117,26 +100,6 @@ void ArrayHeap::printQueue()
     std::cout << "o-o" << std::endl;
 }
 
-/*
-class ArrayHeap : public HeapBase
-{
-  public:
-    ArrayHeap();
-    ~ArrayHeap();
-
-    bool isEmpty();
-    unsigned int pop();
-    void insert(unsigned int inValue);
-    std::string getName();
-    void printQueue();
-
-  private:
-
-    unsigned int currentNext;
-    unsigned int* heapArray;
-
-};
-*/
 
 #define ARRAY_HEAP
 #endif
