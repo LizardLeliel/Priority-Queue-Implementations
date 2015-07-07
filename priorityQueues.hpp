@@ -6,7 +6,7 @@
 #include <ctime>
 #include <iostream>
 
-class PriorityQueue
+template<typename Type> class PriorityQueue
 {
 
   public:
@@ -14,68 +14,56 @@ class PriorityQueue
     virtual ~PriorityQueue() {}
 
     virtual bool isEmpty()            = 0;
-    virtual unsigned int pop()        = 0;
-    virtual void insert(unsigned int) = 0;
+    virtual Type pop()                = 0;
+    virtual void insert(Type)         = 0;
     virtual std::string getName()     = 0;
     virtual void printQueue()         = 0;
 
 };
 
-void runRandomPriorityQueueTest(unsigned int insertAmmount, PriorityQueue* heap)
-{
-    srand(time(NULL));
 
-    for (int i = 0; i < insertAmmount; ++i)
-    {
-        heap->insert(rand());
-    }
-    while (!heap->isEmpty())
-    {
-        std::cout << heap->pop() << ", ";
-    }
-    std::cout << std::endl;
-}
+// template<typename Type> class UnsortedCircularList 
+//     : public PriorityQueue<Type>
+// {
+//   public:
+//     UnsortedCircularList<Type>();
+//     ~UnsortedCircularList<Type>();
 
+//     bool isEmpty();
+//     Type pop();
+//     void insert(Type inValue);
+//     std::string getName();
+//     void printQueue();
 
-class UnsortedCircularList : public PriorityQueue
-{
-  public:
-    UnsortedCircularList();
-    ~UnsortedCircularList();
+//   private:
+//     void removeNode();
 
-    bool isEmpty();
-    unsigned int pop();
-    void insert(unsigned int inValue);
-    std::string getName();
-    void printQueue();
+//     struct QueueNode
+//     {
+//         Type value;
+//         QueueNode* next;
+//         QueueNode(Type inValue) { value = inValue; }
+//     } *queue;
 
-  private:
-    void removeNode();
+// };
 
-    struct QueueNode
-    {
-        unsigned int value;
-        QueueNode* next;
-        QueueNode(unsigned int inValue) { value = inValue; }
-    } *queue;
+// template<typename Type>class ArrayHeap 
+//     : public PriorityQueue<Type>
+// {
+//   public:
+//     ArrayHeap(unsigned int maxValue);
+//     ~ArrayHeap();
 
-};
+//     bool isEmpty();
+//     Type pop();
+//     void insert(Type inValue);
+//     std::string getName();
+//     void printQueue();
 
-class ArrayHeap : public PriorityQueue
-{
-  public:
-    ArrayHeap(unsigned int maxValue);
-    ~ArrayHeap();
+//   private:
+//     unsigned int currentNext;
+//     Type* heapArray; // Array
 
-    bool isEmpty();
-    unsigned int pop();
-    void insert(unsigned int inValue);
-    std::string getName();
-    void printQueue();
+// };
 
-  private:
-    unsigned int currentNext;
-    unsigned int* heapArray;
-
-};
 #endif

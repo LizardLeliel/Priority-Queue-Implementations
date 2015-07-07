@@ -1,5 +1,3 @@
-#ifndef ARRAY_HEAP
-
 #include "priorityQueues.hpp"
 
 #include <string>
@@ -7,18 +5,40 @@
 
 using namespace std;
 
-ArrayHeap::ArrayHeap(unsigned int maxValue)
+template<typename Type>class ArrayHeap 
+    : public PriorityQueue<Type>
+{
+  public:
+    ArrayHeap(unsigned int maxValue);
+    ~ArrayHeap();
+
+    bool isEmpty();
+    Type pop();
+    void insert(Type inValue);
+    std::string getName();
+    void printQueue();
+
+  private:
+    unsigned int currentNext;
+    Type* heapArray; // Array
+
+};
+
+template<typename Type> 
+ArrayHeap<Type>::ArrayHeap(unsigned int maxValue)
 {
     currentNext = 0;
     heapArray   = new unsigned int[maxValue](); // This sets all values to 0
 }
 
-ArrayHeap::~ArrayHeap()
+template<typename Type> 
+ArrayHeap<Type>::~ArrayHeap()
 {
     delete heapArray; // Is this right?
 }
 
-void ArrayHeap::insert(unsigned int inValue)
+template<typename Type> 
+void ArrayHeap<Type>::insert(Type inValue)
 {
     // -- add a potential overflow checking here --
     unsigned int lowerRef, higherRef;
@@ -44,9 +64,10 @@ void ArrayHeap::insert(unsigned int inValue)
     ++currentNext;
 }
 
-unsigned int ArrayHeap::pop()
+template<typename Type> 
+Type ArrayHeap<Type>::pop()
 {
-    int returnVal  = heapArray[0];
+    Type returnVal  = heapArray[0];
     int higherRef  = 0;
     int firstLeaf  = 1;
     int secondLeaf; // Gets initialized within the while loop
@@ -64,18 +85,18 @@ unsigned int ArrayHeap::pop()
 
         if (heapArray[higherRef] < heapArray[firstLeaf])
         {
-            int swapNum = heapArray[higherRef];
+            Type swap            = heapArray[higherRef];
             heapArray[higherRef] = heapArray[firstLeaf];
-            heapArray[firstLeaf] = swapNum;
+            heapArray[firstLeaf] = swap;
             higherRef            = firstLeaf;
             firstLeaf            = higherRef*2 + 1;
         }
 
         else if (heapArray[higherRef] < heapArray[secondLeaf])
         {
-            int swapNum = heapArray[higherRef];
+            Type swap             = heapArray[higherRef];
             heapArray[higherRef]  = heapArray[secondLeaf];
-            heapArray[secondLeaf] = swapNum;
+            heapArray[secondLeaf] = swap;
             higherRef             = secondLeaf;
             firstLeaf             = higherRef*2 + 1;
         }
@@ -85,21 +106,21 @@ unsigned int ArrayHeap::pop()
     
     return returnVal;
 }
-bool ArrayHeap::isEmpty()
+
+template<typename Type>
+bool ArrayHeap<Type>::isEmpty()
 {
     return (currentNext == 0);
 }
 
-string ArrayHeap::getName()
+template<typename Type>
+string ArrayHeap<Type>::getName()
 {
     return "Heap (using an array)";
 }
 
-void ArrayHeap::printQueue()
+template<typename Type>
+void ArrayHeap<Type>::printQueue()
 {
     std::cout << "o-o" << std::endl;
 }
-
-
-#define ARRAY_HEAP
-#endif

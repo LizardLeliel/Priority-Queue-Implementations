@@ -1,4 +1,3 @@
-#ifndef UNSORT_CIRCLE_LIST
 #include "priorityQueues.hpp"
 
 #include <string>
@@ -8,14 +7,40 @@
 using std::string;
 //using std::NULL;
 
-UnsortedCircularList::UnsortedCircularList()
+template<typename Type> class UnsortedCircularList 
+    : public PriorityQueue<Type>
+{
+  public:
+    UnsortedCircularList<Type>();
+    ~UnsortedCircularList<Type>();
+
+    bool isEmpty();
+    Type pop();
+    void insert(Type inValue);
+    std::string getName();
+    void printQueue();
+
+  private:
+    void removeNode();
+
+    struct QueueNode
+    {
+        Type value;
+        QueueNode* next;
+        QueueNode(Type inValue) { value = inValue; }
+    } *queue;
+
+};
+
+template<typename Type>
+UnsortedCircularList<Type>::UnsortedCircularList()
 {
     queue = NULL;
 }
 
-UnsortedCircularList::~UnsortedCircularList()
+template<typename Type>
+UnsortedCircularList<Type>::~UnsortedCircularList()
 {
-    // Is it safe to return from a destructor?
     if (queue == NULL);
     else if (queue->next == queue)
     {
@@ -37,9 +62,10 @@ UnsortedCircularList::~UnsortedCircularList()
     }
 }
 
-void UnsortedCircularList::insert(unsigned int inValue) 
+template<typename Type>
+void UnsortedCircularList<Type>::insert(Type inValue) 
 {
-    //using UnsortedCircularList::QueueNode;
+    //using UnsortedCircularList<Type>::QueueNode;
     QueueNode* newNode = new QueueNode(inValue);
     if (queue == NULL)
     {
@@ -54,7 +80,8 @@ void UnsortedCircularList::insert(unsigned int inValue)
 }
 
 // I'm keeping it here because the only place its used is pop
-void UnsortedCircularList::removeNode() 
+template<typename Type>
+void UnsortedCircularList<Type>::removeNode() 
 {
     QueueNode* toFree = queue->next;
 
@@ -70,7 +97,8 @@ void UnsortedCircularList::removeNode()
     delete toFree;
 }
 
-unsigned int UnsortedCircularList::pop() 
+template<typename Type>
+Type UnsortedCircularList<Type>::pop() 
 {
     if (queue == NULL) return 0;
 
@@ -78,7 +106,7 @@ unsigned int UnsortedCircularList::pop()
     QueueNode* record = finder;
 
     // Note: 0 is suposed to be the minimum value of an unsigned int
-    unsigned int priority = 0;
+    Type priority = 0;
 
     // Basically, we go through every value, looking for the highest one
     do
@@ -99,18 +127,18 @@ unsigned int UnsortedCircularList::pop()
 
 }
 
-bool UnsortedCircularList::isEmpty()
+template<typename Type>
+bool UnsortedCircularList<Type>::isEmpty()
 {
     return (queue == NULL);
 }
 
-string UnsortedCircularList::getName()
+template<typename Type>
+string UnsortedCircularList<Type>::getName()
 {
     return "Unsorted Circular List";
 }
 
-void UnsortedCircularList::printQueue() {}
+template<typename Type>
+void UnsortedCircularList<Type>::printQueue() {}
 
-
-#define UNSORT_CIRCLE_LIST
-#endif

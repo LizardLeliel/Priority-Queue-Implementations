@@ -1,9 +1,9 @@
-CC = g++
+CC   = clang++
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
 PROG = priorityQueue
 
-CFLAGS = -O2 -Wall  -pg -std=gnu++11 
+CFLAGS = -Wall -pg -std=c++11 
 
 # Unused variables is turned off while program is being written
 # (the warnings get anonying, especially since they will be used eventually)
